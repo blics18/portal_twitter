@@ -1,0 +1,121 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+nav{
+	padding: 10px 10px;
+	background-color: #e3f2fd;
+	position: relative;
+	margin-top: 0px;
+	text-align: left;
+	height: 50px;
+}
+nav .container{
+  padding: 0px;
+}
+nav ul{
+	margin: 0px;
+	position: relative;
+	float: left;
+  padding: 0px;
+}
+
+nav ul li{
+	display: inline;
+	margin: 0;
+	padding: 0px 10px;
+	float: left;
+	position: relative;
+}
+
+nav ul li a{
+	text-decoration: none;
+	display: inline-block;
+}
+
+#startContent{
+  margin-top: 15px;
+}
+
+#profileBorder{
+  border: 1px solid #00B7FF;
+}
+
+#profile .col{
+  text-align: center;
+}
+
+h3{
+  padding-top: 10px;
+  margin-bottom: 0px;
+}
+
+#profilePic{
+  background-color: #e3f2fd;
+  height: 100px;
+}
+
+#profilePic .col-sm-12{
+  text-align: center;
+}
+.profileRow{
+  width: 100%;
+  text-align: center;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+.col-sm-9 .row{
+  margin-left: 0px;
+  margin-right: 0px;
+}
+#inputRow{
+  background-color: #e3f2fd;
+}
+
+form{
+  margin-top: 15px;
+}
+
+input[type=text]{
+  border: 1px solid #00B7FF;
+}
+
+input[type=text]:focus{
+  outline: none;
+  border: 3px solid #00B7FF;
+}
+
+.tweet{
+  margin-top: 10px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+.tweet .col-sm-2{
+  text-align: center;
+}
+
+img{
+  border-radius: 50%;
+  width: inherit;
+  width: 7em;
+  height: 7em;
+}
+
+.userTweetDetail h6, p{
+  padding: 10px;
+  margin-bottom: 0px;
+}
+
+.lightText{
+  color: #657786;
+}
+
+.content{
+  padding-left: 0px;
+  padding-right: 0px;
+}
