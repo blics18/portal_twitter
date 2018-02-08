@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
+<% include header %>
     <nav class="navbar fixed-top">
       <div class="container">
       <ul>
@@ -21,6 +13,9 @@
         </li>
         <li>
           <a href="#">Messages</a>
+        </li>
+        <li id="logout">
+          <a href="/home/logout">Logout</a>
         </li>
       </ul>
     </div>
@@ -37,8 +32,9 @@
             </div>
             <div class="row profileRow">
               <div class="col-sm-12">
-                <h3>Brenda La</h3>
-                <p class="lightText">@BrendaLa16</p>
+                <h3><%= firstName %> <%= lastName %></h3>
+                <p class="lightText">@<%= username %></p>
+
               </div>
             </div>
             <div class="row profileRow">
@@ -57,13 +53,15 @@
         <div class="col-sm-9">
           <div class="row">
             <div class="col-sm-12" id="inputRow">
-              <form>
+              <form id="tweetInput-form">
                 <div class="form-group">
-                  <input type="text" class="form-control" name="happeningInput" placeholder="What's happening?">
+                  <input type="text" class="form-control" name="tweetInput" placeholder="What's happening?">
                 </div>
+                <button id ="btn-submitTweet" class="btn mb-2">Tweet</button>
               </form>
             </div>
           </div>
+          <div id="tweets">
           <div class="row tweet">
             <div class="col-sm-2">
                 <img src="/images/beach.jpg" alt="Profile Picture">
@@ -82,29 +80,27 @@
             </div>
           </div>
           <hr>
-          <div class="row tweet">
-            <div class="col-sm-2">
-                <img src="/images/beach.jpg" alt="Profile Picture">
-            </div>
-            <div class="col-sm-10">
-              <div class="row userTweetDetail">
-                  <h6>Brenda La</h6><h6 class="lightText">@BrendaLa16</h6><p class="lightText">3 days ago</p>
-              </div>
-              <div class="row">
-                <div class="col-sm-12 content">
-                  <p>Lorem ipsum dolor sit amet, salutatus prodesset duo at, ad vel nisl intellegam. Iriure invidunt pro an. Usu et aperiam vocibus docendi, mazim zril prodesset vis at, qui te augue atomorum. Alia commodo phaedrum ex ius, an aeque alienum philosophia nec.</p>
-                  <p>Lorem ipsum dolor sit amet, salutatus prodesset duo at, ad vel nisl intellegam. Iriure invidunt pro an. Usu et aperiam vocibus docendi, mazim zril prodesset vis at, qui te augue atomorum. Alia commodo phaedrum ex ius, an aeque alienum philosophia nec.</p>
-                  <p>Lorem ipsum dolor sit amet, salutatus prodesset duo at, ad vel nisl intellegam. Iriure invidunt pro an. Usu et aperiam vocibus docendi, mazim zril prodesset vis at, qui te augue atomorum. Alia commodo phaedrum ex ius, an aeque alienum philosophia nec.</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
+      </div>
       </div>
     </div>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>
+  <script>
+    $(document).ready(function(){
+      $('#btn-submitTweet').on('click', function(event){
+        $.ajax({
+          type: "POST",
+          url: "/home/submitTweet",
+          data: $("#tweetInput-form").serialize(),
+          dataType: "json",
+        })
+        .done(function(json){
+          $("#tweetInput-form")[0].reset();
+          $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${json.firstName} ${json.lastName}</h6><h6 class="lightText">@${json.username}</h6><p class="lightText">3 days ago</p></div><div class="row"><div class="col-sm-12 content"><p>${json.tweet}</p></div></div></div></div><hr/>`);
+        })
+        event.preventDefault();
+      });
+    });
+  </script>
+
+<%include footer %>

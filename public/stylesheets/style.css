@@ -1,6 +1,66 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+}
+
+/*---LOGIN/REGISTRATION----*/
+
+#loginRow{
+  padding: -50px;
+  height: 100vh;
+}
+.form{
+	padding: 20px;
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#registration{
+  background-color: #e3f2fd;
+}
+
+.form input[type=email], input[type=password], input[type=text]{
+	color: black;
+	margin: 10px;
+	border: none;
+	border-bottom: 1px solid #00B7FF;;
+	width: 50%;
+	font-size: 15px;
+  background-color: transparent;
+}
+
+.form input[type=email]:focus, input[type=password]:focus, input[type=text]:focus{
+	outline: none;
+  border-bottom: 3px solid #00B7FF;;
+}
+
+.form button{
+  float: center;
+	margin-top: 10px;
+	width: 50%;
+	height: 40px;
+	border: 2px solid #00B7FF;;
+	color: #00B7FF;;
+	font-size: 15px;
+}
+
+.form button:hover{
+	background-color: #00B7FF;;
+	color: white;
+}
+
+.form button:focus{
+	outline: none;
+}
+
+
+.auth-error-container, .addModal-error-container, .editModal-error-container{
+	color: red;
+	font-size: 1.4em;
+	padding-bottom: 5px;
+	display: none;
 }
 
 a {
@@ -38,8 +98,11 @@ nav ul li a{
 	display: inline-block;
 }
 
+#logout{
+  float: right;
+}
 #startContent{
-  margin-top: 15px;
+  margin-top: 70px;
 }
 
 #profileBorder{
@@ -81,13 +144,31 @@ form{
   margin-top: 15px;
 }
 
-input[type=text]{
+.form-group input[type=text]{
   border: 1px solid #00B7FF;
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
-input[type=text]:focus{
+.form-group input[type=text]:focus{
   outline: none;
   border: 3px solid #00B7FF;
+  color: #00B7FF;
+  width: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#btn-submitTweet{
+  float: right;
+  border: 1px solid #00B7FF;
+  color:  #00B7FF;
+}
+
+#btn-submitTweet:hover{
+  background-color: #00B7FF;
+  color: white;
 }
 
 .tweet{
