@@ -160,6 +160,12 @@ form{
   margin-right: 0px;
 }
 
+#loadIcon{
+  font-size: 100px;
+  position: relative;
+  left: 45%;
+  transform: translateX(-45%);
+}
 #btn-submitTweet{
   float: right;
   border: 1px solid #00B7FF;

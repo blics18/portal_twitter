@@ -8,7 +8,7 @@ router.use(auth.requireLogin);
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  userModel.findOne({"username": req.user.username},
+  userModel.findOne({"email": req.user.email},
   function(err, user){
     if (err){
       return res.send(err);
@@ -21,9 +21,16 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/loadTweets', function(req, res){
+  tweetModel.find({},
+  function(err, tweets){
+    if (err){
+      return res.send(err);
+    }
+    res.send(JSON.stringify(tweets));
+  });
+});
 router.post('/submitTweet', function(req, res){
-  console.log("submitTweet");
-  console.log(req.body.tweetInput);
   var newTweet = new tweetModel({
     user: req.user,
     date: new Date(),
