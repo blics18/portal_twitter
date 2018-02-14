@@ -33,17 +33,21 @@
             <div class="row profileRow">
               <div class="col-sm-12">
                 <h3><%= firstName %> <%= lastName %></h3>
-                <p class="lightText">@<%= username %></p>
+                <p id="username" data-profile-username= "<%= username %>" class="lightText">@<%= username %></p>
 
               </div>
             </div>
             <div class="row profileRow">
-              <div class="col-sm-6">
+              <div class="col-sm-4">
                 <p>Tweets</p>
                 <p>0</p>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-4">
                 <p>Following</p>
+                <p>8</p>
+              </div>
+              <div class="col-sm-4">
+                <p>Followers</p>
                 <p>8</p>
               </div>
             </div>
@@ -63,31 +67,14 @@
           </div>
           <i class="fa fa-spinner fa-spin" id="loadIcon"></i>
           <div id="tweets">
-          <!-- <div class="row tweet">
-            <div class="col-sm-2">
-                <img src="/images/beach.jpg" alt="Profile Picture">
-            </div>
-            <div class="col-sm-10">
-              <div class="row userTweetDetail">
-                  <h6>Brenda La</h6><h6 class="lightText">@BrendaLa16</h6><p class="lightText">3 days ago</p>
-              </div>
-              <div class="row">
-                <div class="col-sm-12 content">
-                  <p>Lorem ipsum dolor sit amet, salutatus prodesset duo at, ad vel nisl intellegam. Iriure invidunt pro an. Usu et aperiam vocibus docendi, mazim zril prodesset vis at, qui te augue atomorum. Alia commodo phaedrum ex ius, an aeque alienum philosophia nec.</p>
-                  <p>Lorem ipsum dolor sit amet, salutatus prodesset duo at, ad vel nisl intellegam. Iriure invidunt pro an. Usu et aperiam vocibus docendi, mazim zril prodesset vis at, qui te augue atomorum. Alia commodo phaedrum ex ius, an aeque alienum philosophia nec.</p>
-                  <p>Lorem ipsum dolor sit amet, salutatus prodesset duo at, ad vel nisl intellegam. Iriure invidunt pro an. Usu et aperiam vocibus docendi, mazim zril prodesset vis at, qui te augue atomorum. Alia commodo phaedrum ex ius, an aeque alienum philosophia nec.</p>
-                </div>
-              </div>
-            </div>
           </div>
-          <hr> -->
         </div>
-      </div>
       </div>
     </div>
 
   <script>
     $(document).ready(function(){
+      var username = $('#username').attr('data-profile-username');
       $.ajax({
         type: "GET",
         url: "/home/loadTweets",
@@ -111,6 +98,14 @@
           $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${json.firstName} ${json.lastName}</h6><h6 class="lightText">@${json.username}</h6><p class="lightText">3 days ago</p></div><div class="row"><div class="col-sm-12 content"><p>${json.tweet}</p></div></div></div></div><hr/>`);
         })
         event.preventDefault();
+      });
+
+      // set-up a connection between the client and the server
+      var socket = io();
+
+      socket.on('message', function(data) {
+         // console.log('Incoming message:', data);
+         $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${data.firstName} ${data.lastName}</h6><h6 class="lightText">@${data.username}</h6><p class="lightText">3 days ago</p></div><div class="row"><div class="col-sm-12 content"><p>${data.tweet}</p></div></div></div></div><hr/>`);
       });
     });
   </script>

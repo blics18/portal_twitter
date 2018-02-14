@@ -172,6 +172,11 @@ form{
   color:  #00B7FF;
 }
 
+#btn-follow{
+  border: 1px solid #00B7FF;
+  color:  #00B7FF;
+}
+
 #btn-submitTweet:hover{
   background-color: #00B7FF;
   color: white;

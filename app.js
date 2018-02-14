@@ -7,13 +7,15 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('client-sessions');
 
-var index = require('./routes/index');
+//var index = require('./routes/index');
 var users = require('./routes/users');
 var home = require('./routes/home');
 var auth = require('./routes/auth');
+var profile = require('./routes/profile');
 
 var userModel = require('./models/user');
 
+var userSession = require('./config');
 var app = express();
 
 mongoose.connect('mongodb://localhost/twitter');
@@ -24,15 +26,7 @@ db.once('open', function() {
 });
 
 // client-sessions
-app.use(session({
-  cookieName: 'session',
-  secret: 'random_string_goes_here',
-  duration: 30 * 60 * 1000,
-  activeDuration: 5 * 60 * 1000,
-  httpOnly: true,
-  secure: true,
-  ephemeral: true
-}));
+  app.use(session(userSession));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -66,7 +60,8 @@ app.use(function(req, res, next) {
 app.use('/auth', auth);
 app.use('/users', users);
 app.use('/home', home);
-app.use('/', index);
+app.use('/profile', profile);
+//app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

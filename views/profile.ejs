@@ -1,0 +1,94 @@
+<% include header %>
+    <nav class="navbar fixed-top">
+      <div class="container">
+      <ul>
+        <li>
+          <a href="#">Home</a>
+        </li>
+        <li>
+          <a href="#">Moments</a>
+        </li>
+        <li>
+          <a href="#">Notifications</a>
+        </li>
+        <li>
+          <a href="#">Messages</a>
+        </li>
+        <li id="logout">
+          <a href="/home/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+    </nav>
+
+    <div class="container">
+      <div class="row" id="startContent">
+        <div class="col-sm-3" id="profile">
+          <div class="row" id="profileBorder">
+            <div class="row profileRow" id="profilePic">
+              <div class="col-sm-12">
+                <img src="/images/beach.jpg" alt="Profile Picture">
+              </div>
+            </div>
+            <div class="row profileRow">
+              <div class="col-sm-12">
+                <h3><%= firstName %> <%= lastName %></h3>
+                <p id="username" data-profile-username=" <%= username %>" class="lightText">@<%= username %></p>
+
+                <button id ="btn-follow" class="btn mb-2">Follow</button>
+              </div>
+            </div>
+            <div class="row profileRow">
+              <div class="col-sm-6">
+                <p>Tweets</p>
+                <p>0</p>
+              </div>
+              <div class="col-sm-6">
+                <p>Following</p>
+                <p>8</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-9">
+          <i class="fa fa-spinner fa-spin" id="loadIcon"></i>
+          <div id="tweets">
+        </div>
+      </div>
+      </div>
+    </div>
+
+  <script>
+    $(document).ready(function(){
+      var username = $('#username').attr('data-profile-username');
+      $.ajax({
+        type: "GET",
+        url: `/profile/loadTweets/${username}`,
+        dataType: "json"
+      })
+      .done(function(json){
+        // if (json.noTweets){
+        //   $('#loadIcon').css('display', 'none');
+        // }else{
+          $('#loadIcon').css('display', 'none');
+          for (i = 0; i < json.length; i++){
+            $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${json[i].user.firstName} ${json[i].user.lastName}</h6><h6 class="lightText">@${json[i].user.username}</h6><p class="lightText">3 days ago</p></div><div class="row"><div class="col-sm-12 content"><p>${json[i].tweet}</p></div></div></div></div><hr/>`);
+          // }
+        }
+      });
+
+      $('#btn-follow').on('click', function(event){
+        $('#btn-follow').html('Following');
+        $.ajax({
+          type: "POST",
+          url: `/profile/follow/${username}`
+        })
+      });
+
+    });
+
+
+  </script>
+
+<%include footer %>
