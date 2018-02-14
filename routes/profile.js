@@ -8,7 +8,7 @@ var router = express.Router();
 router.use(auth.requireLogin);
 
 router.get('/loadTweets/:username', function(req, res){
-  tweetModel.find({"user.username": req.params.username},
+  tweetModel.find({"user.username": req.params.username.trim()},
     function(err, tweets){
       if (err){
         return res.send(err);
@@ -16,20 +16,12 @@ router.get('/loadTweets/:username', function(req, res){
         res.send(JSON.stringify(tweets));
       }
 
-      // if (tweets){
-      //     res.send(JSON.stringify(tweets));
-      // }else{
-      //   res.send(JSON.stringify({
-      //     "noTweets" : true
-      //   }))
-      // }
-
-    })
+    });
 });
 
 router.post('/follow/:username', function(req, res){
   userModel.findOneAndUpdate({"username": req.user.username},
-    {$addToSet: {following: req.params.username}},
+    {$addToSet: {following: req.params.username.trim()}},
     function(err, user){
       if (err){
         return res.send(err);
@@ -48,11 +40,11 @@ router.post('/follow/:username', function(req, res){
 
 })
 router.get('/:username', function(req, res){
-  if (req.params.username == req.user.username){
+  if (req.params.username.trim() == req.user.username){
     res.redirect('/home');
   }
   else{
-    userModel.findOne({"username": req.params.username},
+    userModel.findOne({"username": req.params.username.trim()},
     function(err, user){
         if (err){
           return res.send(err);

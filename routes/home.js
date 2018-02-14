@@ -24,36 +24,22 @@ router.get('/', function(req, res) {
 });
 
 router.get('/loadTweets', function(req, res){
-  // userModel.findOne({_id: req.user._id},
-  // function(err, user){
-  //   if (err){
-  //     return res.send(err);
-  //   }
-  //   if (user){
-  //     followingTweets = [];
-  //     for (i = 0; i < user.following.length; i++){
-  //       tweetModel.find({"user.username": user.following[i]},
-  //       function(err, tweets){
-  //         if (err){
-  //           return res.send(err);
-  //         }
-  //         console.log(tweets);
-  //         followingTweets[i] = JSON.stringify(tweets);
-  //       });
-  //     }
-  //     console.log(followingTweets);
-  //     res.end();
-  //     // res.send(JSON.stringify(tweets));
-  //   }
-  // })
-  tweetModel.find({},
-    function(err, tweets){
-      if (err){
-        return res.send(err);
-      }
-    res.send(JSON.stringify(tweets));
-});
-
+  userModel.findOne({"_id": req.user._id},
+  function(err, user){
+    if (err){
+      return res.send(err);
+    }
+    if (user){
+        tweetModel.find({"user.username":
+        {$in: user.following}},
+        function(err, tweets){
+          if (err){
+            return res.send(err);
+          }
+          res.send(JSON.stringify(tweets));
+        });
+    }
+  })
 });
 
 router.post('/submitTweet', function(req, res){

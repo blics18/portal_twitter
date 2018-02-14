@@ -75,6 +75,7 @@
   <script>
     $(document).ready(function(){
       var username = $('#username').attr('data-profile-username');
+
       $.ajax({
         type: "GET",
         url: "/home/loadTweets",
@@ -83,9 +84,10 @@
       .done(function(json){
         $('#loadIcon').css('display', 'none');
         for (i = 0; i < json.length; i++){
-          $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${json[i].user.firstName} ${json[i].user.lastName}</h6><h6 class="lightText">@${json[i].user.username}</h6><p class="lightText">3 days ago</p></div><div class="row"><div class="col-sm-12 content"><p>${json[i].tweet}</p></div></div></div></div><hr/>`);
+          $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${json[i].user.firstName} ${json[i].user.lastName}</h6><h6 class="lightText">@${json[i].user.username}</h6><p class="lightText">${json[i].date}</p></div><div class="row"><div class="col-sm-12 content"><p>${json[i].tweet}</p></div></div></div></div><hr/>`);
         }
       });
+
       $('#btn-submitTweet').on('click', function(event){
         $.ajax({
           type: "POST",
@@ -95,7 +97,7 @@
         })
         .done(function(json){
           $("#tweetInput-form")[0].reset();
-          $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${json.firstName} ${json.lastName}</h6><h6 class="lightText">@${json.username}</h6><p class="lightText">3 days ago</p></div><div class="row"><div class="col-sm-12 content"><p>${json.tweet}</p></div></div></div></div><hr/>`);
+          $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${json.firstName} ${json.lastName}</h6><h6 class="lightText">@${json.username}</h6><p class="lightText">${json.date}</p></div><div class="row"><div class="col-sm-12 content"><p>${json.tweet}</p></div></div></div></div><hr/>`);
         })
         event.preventDefault();
       });
@@ -105,7 +107,7 @@
 
       socket.on('message', function(data) {
          // console.log('Incoming message:', data);
-         $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${data.firstName} ${data.lastName}</h6><h6 class="lightText">@${data.username}</h6><p class="lightText">3 days ago</p></div><div class="row"><div class="col-sm-12 content"><p>${data.tweet}</p></div></div></div></div><hr/>`);
+         $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${data.firstName} ${data.lastName}</h6><h6 class="lightText">@${data.username}</h6><p class="lightText">${data.date}</p></div><div class="row"><div class="col-sm-12 content"><p>${data.tweet}</p></div></div></div></div><hr/>`);
       });
     });
   </script>
