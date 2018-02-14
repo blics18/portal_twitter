@@ -47,12 +47,12 @@ router.get('/loadTweets', function(req, res){
   //   }
   // })
   tweetModel.find({},
-  function(err, tweets){
-    if (err){
-      return res.send(err);
-    }
+    function(err, tweets){
+      if (err){
+        return res.send(err);
+      }
     res.send(JSON.stringify(tweets));
-  });
+});
 
 });
 

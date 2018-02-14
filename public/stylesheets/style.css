@@ -56,11 +56,11 @@ body {
 }
 
 
-.auth-error-container, .addModal-error-container, .editModal-error-container{
+.auth-error-container{
 	color: red;
 	font-size: 1.4em;
 	padding-bottom: 5px;
-	display: none;
+	/* display: none; */
 }
 
 a {
