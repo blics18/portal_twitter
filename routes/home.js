@@ -38,6 +38,9 @@ router.get('/loadTweets', function(req, res){
           }
           res.send(JSON.stringify(tweets));
         });
+    }else{
+      req.session.reset();
+      res.redirect('/auth');
     }
   })
 });
