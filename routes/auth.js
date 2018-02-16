@@ -41,7 +41,7 @@ router.post('/login', function(req, res){
 			 res.render('auth', {authError: 'Something wrong with database'});
 			 return console.error(err);
    	}
-    user.checkPassword(res.body.password.trim())
+    user.checkPassword(req.body.password.trim())
     .then(function(result){
       if (result){
         req.session.user = user;

@@ -34,11 +34,13 @@
               <div class="col-sm-12">
                 <h3><%= firstName %> <%= lastName %></h3>
                 <p id="username" data-profile-username=" <%= username %>" class="lightText">@<%= username %></p>
+                <div id="target-button">
                 <% if (following){ %>
                     <button id ="btn-unfollow" class="btn mb-2">Following</button>
                 <% }else {%>
                     <button id ="btn-follow" class="btn mb-2">Follow</button>
                 <% } %>
+              </div>
               </div>
             </div>
             <div class="row profileRow">
@@ -81,21 +83,44 @@
         }
       });
 
-      $('#btn-follow').on('click', function(event){
-        $('#btn-follow').html('Following');
+      $('#target-button').on('click', '#btn-follow', function(event){
+        var button = $(this);
         $.ajax({
           type: "POST",
           url: `/profile/follow/${username}`
         })
+        .done(function(){
+          $('#btn-follow').replaceWith('<button id ="btn-unfollow" class="btn mb-2">Following</button>');
+        })
       });
 
-      $('#btn-unfollow').on('click', function(event){
-        $('#btn-unfollow').html('Follow');
+      $('#target-button').on('click', '#btn-unfollow', function(event){
+        var button = $(this);
         $.ajax({
           type: "POST",
           url: `/profile/unfollow/${username}`
-        });
-      });
+        })
+        .done(function(){
+          $('#btn-unfollow').replaceWith('<button id ="btn-follow" class="btn mb-2">Follow</button>');
+        })
+      })
+
+
+      // $('#btn-follow').on('click', function(event){
+      //   $('#btn-follow').html('Following');
+      //   $.ajax({
+      //     type: "POST",
+      //     url: `/profile/follow/${username}`
+      //   })
+      // });
+
+      // $('#btn-unfollow').on('click', function(event){
+      //   $('#btn-unfollow').html('Follow');
+      //   $.ajax({
+      //     type: "POST",
+      //     url: `/profile/unfollow/${username}`
+      //   });
+      // });
 
     });
 
