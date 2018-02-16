@@ -172,7 +172,7 @@ form{
   color:  #00B7FF;
 }
 
-#btn-follow{
+#btn-follow, #btn-unfollow{
   border: 1px solid #00B7FF;
   color:  #00B7FF;
 }
@@ -180,6 +180,10 @@ form{
 #btn-submitTweet:hover{
   background-color: #00B7FF;
   color: white;
+}
+
+.profileRow p{
+  padding: 10px 0px;
 }
 
 .tweet{

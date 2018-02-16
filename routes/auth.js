@@ -8,15 +8,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/register', function(req, res){
-  const saltRounds = 10;
-  bcrypt.hash(req.body.password.trim(), saltRounds, function(err, hash) {
+  // const saltRounds = 10;
+  // bcrypt.hash(req.body.password.trim(), saltRounds, function(err, hash) {
   // Store hash in your password DB.
     var newUser = new userModel({
       firstName: req.body.firstName.trim(),
       lastName: req.body.lastName.trim(),
       username: req.body.username.trim(),
   		email : req.body.email.trim(),
-  		password: hash,
+  		password: userModel.hashPassword(req.body.password.trim()), //hash
       following: [],
       followers: []
   	});
@@ -27,11 +27,12 @@ router.post('/register', function(req, res){
       req.session.user = user;
   		res.redirect('/home');
   	});
-  });
+  // });
 
 
 
 });
+
 
 router.post('/login', function(req, res){
   userModel.findOne({email: req.body.email.trim()},
@@ -40,16 +41,29 @@ router.post('/login', function(req, res){
 			 res.render('auth', {authError: 'Something wrong with database'});
 			 return console.error(err);
    	}
-    // Load hash from your password DB.
-    bcrypt.compare(req.body.password.trim(), user.password, function(err, result) {
+    user.checkPassword(res.body.password.trim())
+    .then(function(result){
       if (result){
-        // sets a cookie with the user's info
         req.session.user = user;
         res.redirect('/home');
       }else{
-	 		    res.render('auth', {authError: 'Incorrect Username or Password'});
-     };
-   });
+        res.render('auth', {authError: 'Incorrect Username or Password'});
+      }
+    })
+    .catch(function(err){
+      console.error(err);
+      res.status(500).send(err);
+    })
+    // Load hash from your password DB.
+   //  bcrypt.compare(req.body.password.trim(), user.password, function(err, result) {
+   //    if (result){
+   //      // sets a cookie with the user's info
+   //      req.session.user = user;
+   //      res.redirect('/home');
+   //    }else{
+	 // 		    res.render('auth', {authError: 'Incorrect Username or Password'});
+   //   };
+   // });
   });
 
 

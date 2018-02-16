@@ -38,7 +38,29 @@ router.post('/follow/:username', function(req, res){
 
   res.end();
 
-})
+});
+
+router.post('/unfollow/:username', function(req, res){
+  userModel.findOneAndUpdate({"username": req.user.username},
+    {$pull: {following: req.params.username.trim()}},
+    function(err, user){
+      if (err){
+        return res.send(err);
+      }
+  })
+
+  userModel.findOneAndUpdate({"username": req.params.username.trim()},
+    {$pull: {followers: req.user.username}},
+    function(err, user){
+      if (err){
+        return res.send(err);
+      }
+  })
+
+  res.end();
+
+});
+
 router.get('/:username', function(req, res){
   if (req.params.username.trim() == req.user.username){
     res.redirect('/home');
@@ -53,7 +75,8 @@ router.get('/:username', function(req, res){
           res.render('profile',{
             firstName: user.firstName,
             lastName: user.lastName,
-            username: user.username
+            username: user.username,
+            following: user.followers.includes(req.user.username)
           });
         }else{
           res.status(404).send("404 - User not found");

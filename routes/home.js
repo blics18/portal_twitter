@@ -13,13 +13,28 @@ router.get('/', function(req, res) {
   function(err, user){
     if (err){
       return res.send(err);
+    }else if(user){
+      var tweets = 0;
+      tweetModel.find({_id: req.user._id},
+      function(err, tweets){
+        if (err){
+          return res.send(err);
+        }else if (tweets){
+          tweets = tweets.length;
+        }
+      })
+      res.render('home',{
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        followersNum: user.followers.length,
+        followingNum: user.following.length,
+        tweetsNum: tweets
+      });
+    }else{
+      res.status(404).send("404-User not found");
     }
-    res.render('home',{
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      followers: user.followers
-    });
+
   });
 });
 

@@ -3,7 +3,7 @@
       <div class="container">
       <ul>
         <li>
-          <a href="#">Home</a>
+          <a href="/home">Home</a>
         </li>
         <li>
           <a href="#">Moments</a>
@@ -34,8 +34,11 @@
               <div class="col-sm-12">
                 <h3><%= firstName %> <%= lastName %></h3>
                 <p id="username" data-profile-username=" <%= username %>" class="lightText">@<%= username %></p>
-
-                <button id ="btn-follow" class="btn mb-2">Follow</button>
+                <% if (following){ %>
+                    <button id ="btn-unfollow" class="btn mb-2">Following</button>
+                <% }else {%>
+                    <button id ="btn-follow" class="btn mb-2">Follow</button>
+                <% } %>
               </div>
             </div>
             <div class="row profileRow">
@@ -84,6 +87,14 @@
           type: "POST",
           url: `/profile/follow/${username}`
         })
+      });
+
+      $('#btn-unfollow').on('click', function(event){
+        $('#btn-unfollow').html('Follow');
+        $.ajax({
+          type: "POST",
+          url: `/profile/unfollow/${username}`
+        });
       });
 
     });
