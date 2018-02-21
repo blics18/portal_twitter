@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('client-sessions');
+var cors = require('cors');
 
 //var index = require('./routes/index');
 var users = require('./routes/users');
@@ -22,7 +23,7 @@ mongoose.connect('mongodb://localhost/twitter');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log("CONNECTED TO MONGO (Twitter)");
+  console.log("CONNECTED TO MONGO (Twitter); PORT 3000");
 });
 
 // client-sessions
@@ -57,6 +58,7 @@ app.use(function(req, res, next) {
   }
 });
 
+app.use(cors({credentials: true, origin: true}));
 app.use('/auth', auth);
 app.use('/users', users);
 app.use('/home', home);
