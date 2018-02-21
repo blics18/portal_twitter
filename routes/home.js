@@ -9,28 +9,28 @@ router.use(auth.requireLogin);
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  userModel.findOne({_id: req.user._id},
+  userModel.findOne({"_id": req.user._id},
   function(err, user){
     if (err){
       return res.send(err);
     }else if(user){
-      var tweets = 0;
-      tweetModel.find({_id: req.user._id},
+      // var tweets = 0;
+      tweetModel.count({"user.username": req.user.username},
       function(err, tweets){
         if (err){
           return res.send(err);
-        }else if (tweets){
-          tweets = tweets.length;
+        }else{
+          res.render('home',{
+            firstName: user.firstName,
+            lastName: user.lastName,
+            username: user.username,
+            followersNum: user.followers.length,
+            followingNum: user.following.length,
+            tweetsNum: tweets
+          });
         }
       })
-      res.render('home',{
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        followersNum: user.followers.length,
-        followingNum: user.following.length,
-        tweetsNum: tweets
-      });
+
     }else{
       res.status(404).send("404-User not found");
     }
@@ -45,8 +45,7 @@ router.get('/loadTweets', function(req, res){
       return res.send(err);
     }
     if (user){
-        tweetModel.find({"user.username":
-        {$in: user.following}},
+        tweetModel.find({$or: [{"user.username":{$in: user.following}}, {"user.username": req.user.username} ]},
         function(err, tweets){
           if (err){
             return res.send(err);
@@ -83,14 +82,24 @@ router.post('/submitTweet', function(req, res){
   newTweet.save(function(err, tweet){
     if (err){
       return res.send(err);
+    }else{
+      tweetModel.count({"user.username" : req.user.username},
+      function(err, counter){
+        if (err){
+          return res.send(err);
+        }else{
+          res.send(JSON.stringify({
+            username: tweet.user.username,
+            firstName: tweet.user.firstName,
+            lastName: tweet.user.lastName,
+            tweet: tweet.tweet,
+            date: tweet.date,
+            tweetCounter: counter
+          }));
+        }
+      });
     }
-    res.send(JSON.stringify({
-      username: tweet.user.username,
-      firstName: tweet.user.firstName,
-      lastName: tweet.user.lastName,
-      tweet: tweet.tweet,
-      date: tweet.date
-    }));
+
   })
 
 });

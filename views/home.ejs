@@ -40,7 +40,7 @@
             <div class="row profileRow">
               <div class="col-sm-4">
                 <p>Tweets</p>
-                <p><%= tweetsNum %></p>
+                <p id="tweetsNum"><%= tweetsNum %></p>
               </div>
               <div class="col-sm-4">
                 <p>Following</p>
@@ -98,6 +98,7 @@
         .done(function(json){
           $("#tweetInput-form")[0].reset();
           $('#tweets').prepend(`<div class="row tweet"><div class="col-sm-2"><img src="/images/beach.jpg" alt="Profile Picture"></div><div class="col-sm-10"><div class="row userTweetDetail"><h6>${json.firstName} ${json.lastName}</h6><h6 class="lightText">@${json.username}</h6><p class="lightText">${json.date}</p></div><div class="row"><div class="col-sm-12 content"><p>${json.tweet}</p></div></div></div></div><hr/>`);
+          $('#tweetsNum').replaceWith(`<p id="tweetsNum">${json.tweetCounter}</p>`);
         })
         event.preventDefault();
       });

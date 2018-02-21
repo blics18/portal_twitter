@@ -14,6 +14,19 @@ var schema = mongoose.Schema({
 
 schema.methods.checkPassword = function checkPassword(password){
 	return bcrypt.compare(password, this.password);
+
+	/*
+	var that = this; //b/c need password from schema bottom will be scope of Promise
+	return new Promise(function(resolve, reject){
+	bcrypt.compare(password, that.password, function(err, res){
+		if(err){
+			return reject(err); //automatically terminate
+		}
+
+		return resolve(res);
+	});
+
+});*/
 }
 
 schema.statics.hashPassword = function hashPassword(password){

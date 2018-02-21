@@ -70,14 +70,24 @@ router.get('/:username', function(req, res){
     function(err, user){
         if (err){
           return res.send(err);
-        }
-        if (user){
-          res.render('profile',{
-            firstName: user.firstName,
-            lastName: user.lastName,
-            username: user.username,
-            following: user.followers.includes(req.user.username)
-          });
+        }else if (user){
+          tweetModel.find({"user.username": req.params.username.trim()},
+          function(err, tweets){
+            if (err){
+              return res.send(err);
+            }else{
+              res.render('profile',{
+                firstName: user.firstName,
+                lastName: user.lastName,
+                username: user.username,
+                followersNum: user.followers.length,
+                followingNum: user.following.length,
+                tweetsNum: tweets.length,
+                following: user.followers.includes(req.user.username)
+              });
+            }
+          })
+
         }else{
           res.status(404).send("404 - User not found");
       }
