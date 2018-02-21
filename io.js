@@ -21,8 +21,8 @@ module.exports = {
         }
         if (user){
              // Connected, let's sign-up for to receive messages for this room
-             for (i = 0; i < user.followers.length; i++){
-              socket.join(user.followers[i]);
+             for (i = 0; i < user.following.length; i++){
+              socket.join(user.following[i]);
             }
         }else{
           res.status(404).send("404 - User not found");
